@@ -150,3 +150,8 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "no-reply@giftchristian.me")
 CONTACT_TO_EMAIL = os.environ.get("CONTACT_TO_EMAIL", "christiangift44@gmail.com")
+
+# Django defaults to DENY, which blocks the resume-preview modal from
+# framing our own /media/resume/... PDF. SAMEORIGIN still blocks every
+# other site from framing us - only this app can frame its own pages.
+X_FRAME_OPTIONS = "SAMEORIGIN"
