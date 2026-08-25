@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -21,7 +20,7 @@
     />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link rel="icon" href="{% static 'images/bg.png' %}" />
+    <link rel="icon" href="./assets/images/bg.png" />
     <link
       rel="stylesheet"
       type="text/css"
@@ -65,7 +64,7 @@
       };
     </script>
 
-    <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+    <link rel="stylesheet" href="assets/css/index.css" />
   </head>
 
   <body class="font-plex bg-paper text-graphite">
@@ -75,7 +74,7 @@
         <nav class="flex items-center justify-between gap-4 py-3">
           <a href="#top" class="flex items-center gap-3 shrink-0">
             <img
-              src="{% static 'images/logo/gcll.png' %}"
+              src="/assets/images/logo/gcll.png"
               alt="Gift Christian logo"
               class="w-9 h-9 sm:w-10 sm:h-10"
             />
@@ -151,18 +150,19 @@
               <div class="relative rounded-2xl border border-white/10 bg-white/[0.03] p-3">
                 <img
                   data-hero-photo
-                  src="{% static 'images/prof.jpeg' %}"
+                  src="./assets/images/prof.jpeg"
                   alt="Gift Christian"
                   class="w-full h-auto rounded-xl object-cover"
                 />
                 <div class="mt-3 flex items-center justify-between font-mono text-[11px] text-paper/50 px-1">
                   <span>Hanover, NH</span>
+                  
                 </div>
               </div>
             </div>
 
             <div class="lg:hidden -mx-4 sm:mx-0 mt-2">
-              <img data-hero-photo src="{% static 'images/prof.jpeg' %}" alt="Gift Christian" class="w-full h-auto rounded-xl" />
+              <img data-hero-photo src="./assets/images/prof.jpeg" alt="Gift Christian" class="w-full h-auto rounded-xl" />
             </div>
           </div>
         </div>
@@ -269,7 +269,7 @@
 
               <div class="flex flex-col sm:flex-row items-center gap-6 pt-10 mt-2 border-t border-wire">
                 <img
-                  src="{% static 'images/gifs/lets-connect.gif' %}"
+                  src="./assets/images/gifs/lets-connect.gif"
                   alt="let's connect"
                   class="w-28 h-28 rounded-2xl border border-wire object-cover shrink-0"
                   loading="lazy"
@@ -350,8 +350,58 @@
           <div class="flex flex-col lg:flex-row gap-10 lg:gap-16">
             <!-- Education List -->
             <div class="lg:w-2/5">
-              <div id="educationContainer" class="space-y-8">
-                <!-- Education items will be dynamically inserted here by JavaScript -->
+              <div class="space-y-8">
+                <!-- Education Item 1 -->
+                <div class="flex gap-5">
+                  <div class="mt-2 flex-shrink-0 w-3 h-3 border border-amber bg-cream rounded-full flex items-center justify-center">
+                    <div class="w-1.5 h-1.5 rounded-full bg-amber"></div>
+                  </div>
+                  <div class="flex-1">
+                    <h5 class="text-xl sm:text-2xl font-semibold mb-2 text-ink">
+                      <a href="https://www.dartmouth.edu/" target="_blank" class="hover:text-amber transition-colors">
+                        Dartmouth College, 2029
+                      </a>
+                    </h5>
+                    <p class="text-mute leading-relaxed">
+                      Bachelor of Arts: Computer Science and Human Centered
+                      Design
+                      <br />
+                      <b class="text-graphite">GPA:</b> _ / 4.0
+                      <br />
+                      <b class="text-graphite">Coursework:</b> Data Structures
+                      &amp; Algorithms, Software Design &amp; Implementation,
+                      Discrete Mathematics, Foundations of Applied Computer
+                      Science, Calculus III, Intro to Programming
+                      <br />
+                      <b class="text-graphite">Activities:</b> ColorStack
+                      (Treasurer), HealthX Lab (ML Research), CodePath,
+                      First-Gen Office (CS Teaching Assistant)
+                      <br />
+                      <b class="text-graphite">Award:</b> AI in the Physical
+                      World Award, DALI Technigala Hackathon 2026, for Sema
+                      Health AI
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Education Item 2 -->
+                <div class="flex gap-5">
+                  <div class="mt-2 flex-shrink-0 w-3 h-3 border border-wire bg-cream rounded-full"></div>
+                  <div class="flex-1">
+                    <h5 class="text-xl sm:text-2xl font-semibold mb-2 text-ink">
+                      Ilboru High School, Arusha, 2023
+                    </h5>
+                    <p class="text-mute leading-relaxed">
+                      <b class="text-graphite">GPA:</b> 4.0 / 4.0
+                      <br />
+                      <b class="text-graphite">Coursework:</b> Physics, Chemistry,
+                      Mathematics
+                      <br />
+                      <b class="text-graphite">Activities:</b> STEM Club General
+                      Secretary, Web Dev, Hackathons, Lab Assistant
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -559,7 +609,7 @@
     <footer class="bg-ink text-paper/60 py-10">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col items-center gap-4">
-          <img src="{% static 'images/logo/gcll.png' %}" alt="logo" class="w-10 h-10 opacity-80" />
+          <img src="/assets/images/logo/gcll.png" alt="logo" class="w-10 h-10 opacity-80" />
           <p class="text-sm text-center">
             &copy;
             <script>
@@ -588,7 +638,7 @@
     </button>
 
     <!-- JavaScript for Dynamic Content -->
-    <script src="{% static 'js/index.js' %}"></script>
+    <script src="assets/js/index.js"></script>
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   </body>
