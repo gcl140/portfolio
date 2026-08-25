@@ -129,8 +129,8 @@ PROJECTS = [
         "image": "https://github.com/gcl140/gcl140.github.io/blob/main/images/tansaf.png?raw=true",
     },
     {
-        "name": "DALI Social",
-        "description": "A full-stack social platform for the DALI Lab community with member discovery, posts, connections, and rich profiles.",
+        "name": "Office Social",
+        "description": "A full-stack social platform for the Office communities with member discovery, posts, connections, and rich profiles.",
         "url": "https://maghettoni.pythonanywhere.com/",
         "code_url": "https://github.com/gcl140/dali_social",
         "tech": ["Django", "APIs", "Tailwind CSS"],
