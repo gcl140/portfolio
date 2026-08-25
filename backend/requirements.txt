@@ -4,6 +4,7 @@ Pillow>=10.4
 python-dotenv>=1.0
 requests>=2.32
 gunicorn>=22.0
+whitenoise>=6.12
 
 # Only needed when MYSQL_DATABASE is set in .env (see .env.example).
 # Requires the MySQL client dev headers on the host; comment out for sqlite-only dev.

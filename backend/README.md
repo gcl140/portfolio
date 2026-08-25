@@ -58,26 +58,29 @@ needs to call this API directly.
 
 ## Deploying to your server
 
-This is built to run on your own box (the one your project subdomains like
-`meetups.giftchristian.dev` run from), reachable at `giftchristian.dev` (or
-whichever domain you point at it - it's now the domain that serves the page
-itself, not a separate API subdomain). Rough shape:
+Runs on your own box (the same one your other project subdomains run from),
+behind a Cloudflare Tunnel, on `giftchristian.dev`. No nginx: gunicorn
+serves the app directly on its own port, and
+[WhiteNoise](https://whitenoise.readthedocs.io/) (already wired into
+`MIDDLEWARE`/`STORAGES` in `settings.py`) serves static files from inside
+the same process - matching how your other projects each run their own
+service on their own port with the tunnel routing straight to it.
 
-1. Install MySQL if you want it instead of sqlite, create a database and user.
-2. On the server: clone this repo, set up the venv, `pip install -r requirements.txt`.
-3. Copy `.env.example` to `.env`, fill in `MYSQL_*`, `DJANGO_SECRET_KEY`,
-   `DJANGO_ALLOWED_HOSTS=giftchristian.dev`, `DJANGO_DEBUG=False`,
-   and the `EMAIL_*` vars (a Gmail app password works fine for
-   `EMAIL_HOST_USER`/`EMAIL_HOST_PASSWORD`, or swap in whatever SMTP you use).
-   Set `EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend` to
-   actually send instead of just logging to console.
+1. Create a MySQL database + user for this app (MySQL's likely already
+   running on the box for your other projects).
+2. Clone this repo, set up the venv, `pip install -r requirements.txt`.
+3. Copy `.env.example` to `.env`, fill in `MYSQL_*`, a fresh
+   `DJANGO_SECRET_KEY`, `DJANGO_ALLOWED_HOSTS=giftchristian.dev`,
+   `DJANGO_DEBUG=False`, and the `EMAIL_*` vars (a Gmail app password works
+   fine for `EMAIL_HOST_USER`/`EMAIL_HOST_PASSWORD`). Set
+   `EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend` to actually
+   send instead of just logging to console.
 4. `python manage.py migrate && python manage.py seed_data && python manage.py createsuperuser`
-5. `python manage.py collectstatic` (gathers admin + app static files into `staticfiles/`).
-6. Run it behind gunicorn + nginx (or Tailscale + Caddy, whatever you're
-   already using for the subdomains), pointed at `config.wsgi:application`,
-   with `nginx` serving `/static/` and `/media/` directly. With `DEBUG=False`,
-   `runserver` won't serve those itself - that's nginx's job in production.
-7. Point DNS: `giftchristian.dev` -> this server.
+5. `python manage.py collectstatic --noinput` (WhiteNoise serves from here).
+6. Run gunicorn bound to `127.0.0.1:<port>` as a systemd service (pick a
+   port your other projects aren't already using).
+7. In the Cloudflare Zero Trust dashboard, add a Public Hostname on the
+   tunnel: `giftchristian.dev` -> `http://localhost:<port>`.
 
 ## Notes
 
