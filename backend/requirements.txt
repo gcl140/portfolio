@@ -1,0 +1,10 @@
+Django>=5.2,<6.0
+django-cors-headers>=4.4
+Pillow>=10.4
+python-dotenv>=1.0
+requests>=2.32
+gunicorn>=22.0
+
+# Only needed when MYSQL_DATABASE is set in .env (see .env.example).
+# Requires the MySQL client dev headers on the host; comment out for sqlite-only dev.
+mysqlclient>=2.2

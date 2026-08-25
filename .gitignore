@@ -1,0 +1,19 @@
+junkk/
+
+# OS
+.DS_Store
+
+# Backend (Django)
+backend/venv/
+backend/env/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/*.pyc
+backend/db.sqlite3
+backend/media/
+backend/staticfiles/
+backend/.env
+
+.claude/
+.agents/
+skills-lock.json
