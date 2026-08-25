@@ -90,10 +90,10 @@
 
           <div class="flex items-center gap-3">
             <button
-              onclick="downloadResumePDF(this)"
+              onclick="openResumeModal()"
               class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 border border-amber rounded-full bg-transparent text-amber text-sm font-medium hover:bg-amber hover:text-ink transition-colors duration-300"
             >
-              <span>Download resume</span>
+              <span>Resume</span>
             </button>
             <button
               id="navMenuToggle"
@@ -112,10 +112,10 @@
           <a href="#projects" class="hover:text-amber transition-colors">projects</a>
           <a href="#contact" class="hover:text-amber transition-colors">contact</a>
           <button
-            onclick="downloadResumePDF(this)"
+            onclick="openResumeModal()"
             class="self-start mt-1 px-5 py-2.5 border border-amber rounded-full text-amber text-sm font-medium hover:bg-amber hover:text-ink transition-colors duration-300"
           >
-            Download resume
+            Resume
           </button>
         </div>
       </div>
@@ -586,6 +586,45 @@
     >
       <i class="fas fa-arrow-up text-lg"></i>
     </button>
+
+    <!-- Resume Modal -->
+    <div
+      id="resumeModal"
+      class="hidden fixed inset-0 z-[70] items-center justify-center p-0 sm:p-6"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Resume preview"
+    >
+      <div
+        class="absolute inset-0 bg-ink/80 backdrop-blur-sm"
+        onclick="closeResumeModal()"
+      ></div>
+      <div class="relative bg-cream w-full h-full sm:h-[88vh] sm:max-w-3xl sm:rounded-2xl overflow-hidden flex flex-col shadow-2xl">
+        <div class="flex items-center justify-between gap-3 px-5 py-4 border-b border-white/10 bg-ink text-paper shrink-0">
+          <span class="font-mono text-sm text-paper/70">resume.pdf</span>
+          <div class="flex items-center gap-2">
+            <button
+              onclick="downloadResumePDF(this)"
+              class="px-4 py-2 border border-amber rounded-full text-amber text-sm font-medium hover:bg-amber hover:text-ink transition-colors duration-300"
+            >
+              Download
+            </button>
+            <button
+              onclick="closeResumeModal()"
+              aria-label="Close resume preview"
+              class="w-9 h-9 flex items-center justify-center text-paper hover:text-amber transition-colors"
+            >
+              <i class="fas fa-xmark text-lg"></i>
+            </button>
+          </div>
+        </div>
+        <iframe
+          id="resumeModalFrame"
+          class="flex-1 w-full bg-white"
+          title="Resume preview"
+        ></iframe>
+      </div>
+    </div>
 
     <!-- JavaScript for Dynamic Content -->
     <script src="{% static 'js/index.js' %}"></script>

@@ -901,6 +901,33 @@ if (prefersReducedMotion) {
   revealTargets.forEach((el) => revealObserver.observe(el));
 }
 
+// Resume preview modal
+function openResumeModal() {
+  const modal = document.getElementById("resumeModal");
+  const frame = document.getElementById("resumeModalFrame");
+  if (!modal || !frame) return;
+
+  // Lazy-load the PDF only when the modal is actually opened.
+  const url = window.__resumeUrl || "/static/files/resume.pdf";
+  if (frame.src !== url) frame.src = url;
+
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
+  document.body.style.overflow = "hidden";
+}
+
+function closeResumeModal() {
+  const modal = document.getElementById("resumeModal");
+  if (!modal) return;
+  modal.classList.add("hidden");
+  modal.classList.remove("flex");
+  document.body.style.overflow = "";
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeResumeModal();
+});
+
 // Download Resume as PDF
 function downloadResumePDF(triggerBtn) {
   const originalContent = triggerBtn ? triggerBtn.innerHTML : null;
