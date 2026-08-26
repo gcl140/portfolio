@@ -165,7 +165,7 @@ const experiences = [
     period: "Jul 2025 - Sep 2025",
     title: "Software Development Intern",
     company: "North and Beyond Heights",
-    location: "Dar es Salaam, Tanzania",
+    location: "Dar es Salaam",
     type: "Internship",
     current: false,
     bullets: [
