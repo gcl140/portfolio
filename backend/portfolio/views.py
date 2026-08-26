@@ -1,4 +1,5 @@
 import json
+import re
 from datetime import datetime
 
 from django.core.mail import send_mail
@@ -70,6 +71,12 @@ def education(request):
     return JsonResponse({"results": data})
 
 
+def _project_image(request, p):
+    if p.image_upload:
+        return _absolute(request, p.image_upload.url)
+    return p.image
+
+
 @require_GET
 def projects(request):
     data = [
@@ -79,7 +86,7 @@ def projects(request):
             "description": p.description,
             "url": p.url,
             "codeUrl": p.code_url,
-            "image": p.image,
+            "image": _project_image(request, p),
             "type": p.project_type,
             "year": p.year,
             "featured": p.is_featured,
@@ -108,7 +115,10 @@ def interests(request):
 @require_GET
 def about(request):
     info = AboutMe.load()
-    paragraphs = [p.strip() for p in info.bio.split("\n\n") if p.strip()]
+    # Browsers/admin widgets sometimes submit textarea content with \r\n line
+    # endings, so a literal "\n\n" split can silently miss blank lines.
+    normalized_bio = info.bio.replace("\r\n", "\n").replace("\r", "\n")
+    paragraphs = [p.strip() for p in re.split(r"\n[ \t]*\n+", normalized_bio) if p.strip()]
     return JsonResponse(
         {
             "role": info.role,

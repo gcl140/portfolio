@@ -17,3 +17,4 @@ backend/.env
 .claude/
 .agents/
 skills-lock.json
+.gstack/

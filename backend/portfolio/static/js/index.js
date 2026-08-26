@@ -274,15 +274,23 @@ function renderProjects() {
     }`;
     projectCard.onclick = () => window.open(project.url, "_blank");
 
+    const imageFallback =
+      window.PROJECT_IMAGE_FALLBACK || "/static/images/project.png";
+    const imageSrc = project.image || imageFallback;
+    const visibleTech = project.tech.slice(0, 5);
+    const hiddenTechCount = project.tech.length - visibleTech.length;
+
     projectCard.innerHTML = `
                     <div class="overflow-hidden rounded-lg relative h-56 ${
                       isFeatured ? "md:h-72 md:w-1/2 shrink-0" : ""
                     }">
                         <img
-                            src="${project.image}"
+                            src="${imageSrc}"
                             alt="${project.name}"
+                            loading="lazy"
+                            decoding="async"
                             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            onerror="this.src='https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=870&q=80'"
+                            onerror="this.onerror=null;this.src='${imageFallback}'"
                         />
                         <div class="absolute inset-0 bg-ink/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
@@ -291,22 +299,47 @@ function renderProjects() {
                             <h5 class="text-xl sm:text-2xl font-semibold text-ink group-hover:text-amber transition-colors">
                                 ${project.name}
                             </h5>
-                            <svg class="w-7 h-7 text-mute group-hover:text-amber transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                            </svg>
+                            <div class="flex items-center gap-3 flex-shrink-0">
+                                ${
+                                  project.codeUrl
+                                    ? `
+                                <a
+                                    href="${project.codeUrl}"
+                                    target="_blank"
+                                    rel="noopener"
+                                    aria-label="View source on GitHub"
+                                    title="View source on GitHub"
+                                    onclick="event.stopPropagation()"
+                                    class="text-mute hover:text-amber transition-colors"
+                                >
+                                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.76.11 3.05.74.8 1.19 1.83 1.19 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.07.78 2.15 0 1.55-.01 2.8-.01 3.18 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12c0-6.27-5.23-11.5-11.5-11.5Z"/>
+                                    </svg>
+                                </a>
+                                `
+                                    : ""
+                                }
+                                <svg class="w-7 h-7 text-mute group-hover:text-amber transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                </svg>
+                            </div>
                         </div>
                         <p class="text-mute text-sm sm:text-base line-clamp-4">${
                           project.description
                         }</p>
                         <div class="flex flex-wrap gap-2 mt-2">
-                            ${project.tech
-                              .slice(0, 3)
+                            ${visibleTech
                               .map(
                                 (tech) => `
                                 <span class="px-3 py-1 bg-ink text-xs sm:text-sm text-paper rounded-full">${tech}</span>
                             `
                               )
                               .join("")}
+                            ${
+                              hiddenTechCount > 0
+                                ? `<span class="px-3 py-1 bg-ink/10 text-ink text-xs sm:text-sm rounded-full">+${hiddenTechCount}</span>`
+                                : ""
+                            }
                         </div>
                     </div>
                 `;

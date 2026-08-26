@@ -57,18 +57,51 @@ class Project(models.Model):
     description = models.TextField()
     url = models.URLField(help_text="Live URL, often a subdomain of giftchristian.dev")
     code_url = models.URLField("code URL", blank=True)
-    image = models.URLField(help_text="Cover image URL")
+    image_upload = models.ImageField(
+        "cover image",
+        upload_to="projects/",
+        blank=True,
+        null=True,
+        help_text="Upload a cover image. Takes priority over the URL below if both are set.",
+    )
+    image = models.URLField(
+        "cover image URL",
+        blank=True,
+        help_text="Cover image URL, used only if no image is uploaded above.",
+    )
     project_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default="fullstack")
     year = models.CharField(max_length=4)
     skills = models.ManyToManyField(Skill, related_name="projects", blank=True)
     is_featured = models.BooleanField(default=False)
-    order = models.PositiveIntegerField(default=0)
+    order = models.PositiveIntegerField(
+        default=0,
+        help_text="Position in the pipeline. Saving with an order that's already taken "
+        "bumps that item and everything after it up by one.",
+    )
 
     class Meta:
         ordering = ["order", "-year", "name"]
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            Project.objects.filter(order__gte=self.order).update(order=models.F("order") + 1)
+        else:
+            previous_order = (
+                Project.objects.filter(pk=self.pk).values_list("order", flat=True).first()
+            )
+            if previous_order is not None and previous_order != self.order:
+                if self.order < previous_order:
+                    Project.objects.filter(
+                        order__gte=self.order, order__lt=previous_order
+                    ).exclude(pk=self.pk).update(order=models.F("order") + 1)
+                else:
+                    Project.objects.filter(
+                        order__gt=previous_order, order__lte=self.order
+                    ).exclude(pk=self.pk).update(order=models.F("order") - 1)
+        super().save(*args, **kwargs)
 
 
 class Interest(models.Model):
