@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
 
 from .models import (
+    AboutMe,
     ContactInfo,
     ContactMessage,
     Education,
@@ -102,6 +103,20 @@ def interests(request):
         for i in Interest.objects.all()
     ]
     return JsonResponse({"results": data})
+
+
+@require_GET
+def about(request):
+    info = AboutMe.load()
+    paragraphs = [p.strip() for p in info.bio.split("\n\n") if p.strip()]
+    return JsonResponse(
+        {
+            "role": info.role,
+            "location": info.location,
+            "bio": info.bio,
+            "paragraphs": paragraphs,
+        }
+    )
 
 
 @require_GET

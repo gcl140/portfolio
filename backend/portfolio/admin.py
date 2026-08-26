@@ -1,6 +1,9 @@
 from django.contrib import admin
+from django.db import models
+from django.forms import Textarea
 
 from .models import (
+    AboutMe,
     ContactInfo,
     ContactMessage,
     Education,
@@ -50,6 +53,20 @@ class ContactInfoAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         # Singleton: one row only, edit it instead of adding more.
         return not ContactInfo.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(AboutMe)
+class AboutMeAdmin(admin.ModelAdmin):
+    list_display = ("role", "location")
+    formfield_overrides = {
+        models.TextField: {"widget": Textarea(attrs={"rows": 12, "cols": 80})},
+    }
+
+    def has_add_permission(self, request):
+        return not AboutMe.objects.exists()
 
     def has_delete_permission(self, request, obj=None):
         return False

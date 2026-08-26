@@ -748,7 +748,7 @@ async function loadPortfolioData() {
   renderSkillsSkeleton();
   renderExperienceSkeleton();
 
-  const [educationRes, projectsRes, skillsRes, interestsRes, contactRes, statsRes] =
+  const [educationRes, projectsRes, skillsRes, interestsRes, contactRes, statsRes, aboutRes] =
     await Promise.allSettled([
       fetch(`${API_BASE_URL}/api/education/`).then((r) => r.json()),
       fetch(`${API_BASE_URL}/api/projects/`).then((r) => r.json()),
@@ -756,6 +756,7 @@ async function loadPortfolioData() {
       fetch(`${API_BASE_URL}/api/interests/`).then((r) => r.json()),
       fetch(`${API_BASE_URL}/api/contact-info/`).then((r) => r.json()),
       fetch(`${API_BASE_URL}/api/stats/`).then((r) => r.json()),
+      fetch(`${API_BASE_URL}/api/about/`).then((r) => r.json()),
     ]);
 
   if (educationRes.status === "fulfilled") education = educationRes.value.results;
@@ -782,6 +783,28 @@ async function loadPortfolioData() {
 
   if (contactRes.status === "fulfilled") applyContactInfo(contactRes.value);
   if (statsRes.status === "fulfilled") applyStats(statsRes.value);
+  if (aboutRes.status === "fulfilled") applyAboutMe(aboutRes.value);
+}
+
+// Fill in the About section's role/location card and bio paragraphs.
+function applyAboutMe(about) {
+  const role = document.querySelector("[data-about-role]");
+  const location = document.querySelector("[data-about-location]");
+  const bio = document.querySelector("[data-about-bio]");
+
+  if (role && about.role) role.textContent = about.role;
+  if (location && about.location) location.textContent = about.location;
+  if (bio && about.paragraphs && about.paragraphs.length) {
+    bio.innerHTML = about.paragraphs
+      .map((p) => `<p>${escapeHtml(p)}</p>`)
+      .join("");
+  }
+}
+
+function escapeHtml(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
 }
 
 // Fill in every element that displays live contact info. Elements that wrap

@@ -111,6 +111,33 @@ class ContactInfo(models.Model):
         return obj
 
 
+class AboutMe(models.Model):
+    """Singleton: the About section's role/location card and bio copy."""
+
+    role = models.CharField(max_length=120, default="SDE Intern, Evergreen AI")
+    location = models.CharField(max_length=120, default="Hanover, NH")
+    bio = models.TextField(
+        help_text="Separate paragraphs with a blank line.",
+        default="",
+    )
+
+    class Meta:
+        verbose_name = "About me"
+        verbose_name_plural = "About me"
+
+    def __str__(self):
+        return "About me"
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def load(cls):
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj
+
+
 class Profile(models.Model):
     """Singleton: the handful of numbers the About section displays."""
 

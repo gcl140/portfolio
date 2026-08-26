@@ -5,7 +5,15 @@ import requests
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
 
-from portfolio.models import ContactInfo, Education, Interest, Profile, Project, Skill
+from portfolio.models import (
+    AboutMe,
+    ContactInfo,
+    Education,
+    Interest,
+    Profile,
+    Project,
+    Skill,
+)
 
 # portfolio/static/, where prof.jpeg and resume.pdf live as the
 # fallback copies bundled with the template (not the same file object as
@@ -210,6 +218,25 @@ PROJECTS = [
     },
 ]
 
+ABOUT_ME = {
+    "role": "SDE Intern, Evergreen AI",
+    "location": "Hanover, NH",
+    "bio": (
+        "I turn coffee, stubbornness, and roughly four Stack Overflow "
+        "tabs into software that (usually) works on the first deploy.\n\n"
+        "Right now I'm building a wellness chatbot for Dartmouth so it "
+        "doesn't say anything unhinged to stressed-out students, which "
+        "is basically full-time damage control with a computer science "
+        "degree attached. Before that I was writing Django apps in "
+        "Python, mostly by yelling at my laptop in Swahili when the "
+        "migrations broke.\n\n"
+        "I like Python because it lets me pretend I'm fluent in a "
+        "language. I like JavaScript because someone has to. And I "
+        "like shipping things more than I like admitting my code has "
+        "bugs, which, for the record, it does not. It has \"features.\""
+    ),
+}
+
 INTERESTS = [
     {
         "name": "Soccer",
@@ -262,6 +289,7 @@ class Command(BaseCommand):
         self.seed_interests(skip_images=options["skip_images"])
         self.seed_contact_info()
         self.seed_profile()
+        self.seed_about_me()
         self.stdout.write(self.style.SUCCESS("Seed complete."))
 
     def seed_education(self):
@@ -370,3 +398,7 @@ class Command(BaseCommand):
 
         profile.save()
         self.stdout.write("  profile: ready")
+
+    def seed_about_me(self):
+        AboutMe.objects.update_or_create(pk=1, defaults=ABOUT_ME)
+        self.stdout.write("  about me: ready")
